@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=9" >
+
+<title>统计学习导论-线性回归</title>
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 12px;
+   margin: 8px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre {	
+   margin-top: 0;
+   max-width: 95%;
+   border: 1px solid #ccc;
+   white-space: pre-wrap;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code.r, code.cpp {
+   background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
+
+</style>
+
+
+
+<!-- MathJax scripts -->
+<script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+</head>
+
+<body>
+<h1>统计学习导论-线性回归</h1>
+
+<h1>简单线性回归</h1>
+
+<ul>
+<li>\( Y \approx \beta_0 + \beta_1 X \)</li>
+<li>用最小二乘法估计\( \beta_0 \)与\( \beta_1 \)得到估计值\( \hat \beta_0 \)与\( \hat \beta_1 \)，代入\( X \)，得到模型估计值\( \hat Y \)</li>
+<li>残差平方和：\( RSS = e_1^2 + e_2^2 + ... + e_n^2 \)，使RSS最小，求导可得参数</li>
+<li>回归线不等于最小二乘线，最小二乘线是通过采样对回归线的估计</li>
+<li>估计会存在偏差，均值的偏差用标准误来描述\( Var(\hat \mu) = SE(\mu)^2 = \frac{\sigma^2}{n} \)</li>
+<li>回归参数的估计也涉及标准误的计算\( Var(\beta_{1}) = \frac{\sigma^2}{\sum_{i=1}^n{(x_i - \bar{x})^2}} \)</li>
+<li>\( \sigma^2 \)可用残差标准误RSE(\( RSE = RSS/(n − 2) \))来估计\( \qquad\hat\sigma^2 = \frac{n-p}{n}\;s^2 \)</li>
+<li>据此可得回归参数的95%置信区间\( \hat \beta_1 ± 2 \cdot SE(\hat \beta_1) \)</li>
+<li>参数的评价可通过假设检验进行，零假设为\( \beta_1 \)为0，也就是自变量对因变量无影响，构建t统计量\( t = \frac{\hat \beta_1 - 0}{\hat {SE}(\hat \beta_1)} \)，然后可根据p值判断参数的显著性</li>
+<li>评价参数后需要评价模型，主要通过\( RSE \)与\( R^2 \)来进行</li>
+<li>\( R^2 \)表示模型所解释总体方差的比例，与\( RSE \)不同，独立于Y，\( R^2 = \frac{TSS - RSS}{TSS} \)</li>
+<li>\( R^2 \)与两变量间的相关系数是一致的，但\( R^2 \)统计量的应用面要广于相关系数</li>
+<li>相关系数也可进行假设检验进而判断相关的显著性</li>
+</ul>
+
+<h1>多元线性回归</h1>
+
+<ul>
+<li>通过统计量F检验确定回归是否显著，零假设为所有自变量系数为0 \( F = \frac{(TSS - RSS)/p}{RSS/(n-p-1)} \)</li>
+<li>变量选择：向前选择（从0个到p个，显著则包含），向后选择（从p个到0个，不显著则剔除），混合选择（通过p的阈值调节）</li>
+<li>因为RSS会减少，\( R^2 \)会伴随自变量数目的增加而增加</li>
+<li>\( RSE \)在多元线性线性回归中为\( RSE = RSS/(n − p - 1) \)，伴随自变量个数增加影响超过\( RSS \)减少的影响，\( RSE \)会增大</li>
+<li>自变量间的影响会导致相比单一变量预测更容易出现不显著，这说明自变量间有可能可相互解释</li>
+<li>预测的置信区间与预测区间，前者指模型的变动范围，后者指某个预测值的变动范围，考虑真值本身的变动，后者大于前者</li>
+<li>因子变量通过对每个水平添加系数0，1来回归，也可根据需要赋值</li>
+</ul>
+
+<h2>线性模型延拓</h2>
+
+<ul>
+<li>线性模型基本假设：可加性与线性</li>
+<li>去掉可加性：考虑交互作用</li>
+<li>层级原理：交互作用项显著而主作用不显著时不可去掉主作用项</li>
+<li>去掉线性：多项式回归</li>
+</ul>
+
+<h2>常见问题</h2>
+
+<ul>
+<li>关系非线性：残差图判断</li>
+<li>误差项共相关：误差项的相关会导致标准误估计偏低，低估参数的区间使不显著差异变得显著，考虑时间序列数据，观察误差项轨迹判断</li>
+<li>误差项方差非常数：喇叭状残差图，通过对因变量进行对数或开方来收敛方差，或者用加权最小二乘</li>
+<li>异常值：通过标准化残差图判断</li>
+<li>杠杆点：加入后会影响模型拟合，通过杠杆统计量判断： \( h_i = \frac{1}{n} + \frac{(x_i - \bar x)^2}{\sum_{i' = 1}^{n} (x_i' - \bar x)^2} \) 多元回归中该统计量均值为\( (p+1)/n \)，超过很多则可能为杠杆点</li>
+<li>在标准残差-杠杆值图中，右上或右下方为危险值，左方数值对回归影响不大</li>
+<li>共线性：共线性的变量相互可替代，取值范围扩大，标准误加大，对因变量影响相互抵消，降低参数假设检验的功效</li>
+<li>多重共线性：引入方差膨胀因子，自变量引入全模型与单一模型方差的比值，超过5或10说明存在共相关，\( VIF(\hat \beta_j) = \frac{1}{1 - R^2_{X_j|X_{-j}}} \)</li>
+<li>解决共线性：丢弃变量或合并变量</li>
+<li>共线性不同于交互作用</li>
+</ul>
+
+<h1>线性回归与k临近算法比较</h1>
+
+<ul>
+<li>k临近算法：\( \hat f(x_0) = \frac{1}{K} \sum_{x_i \in N_0} y_i \) 核心是选择k</li>
+<li>KNN算法在解决非线性问题上有优势，但一样的面对高维诅咒</li>
+<li>线性回归可给出可解释的形式与简单的描述</li>
+</ul>
+
+</body>
+
+</html>
+

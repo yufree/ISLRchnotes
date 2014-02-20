@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=9" >
+
+<title>统计学习导论-统计学习</title>
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 12px;
+   margin: 8px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre {	
+   margin-top: 0;
+   max-width: 95%;
+   border: 1px solid #ccc;
+   white-space: pre-wrap;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code.r, code.cpp {
+   background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
+
+</style>
+
+
+
+<!-- MathJax scripts -->
+<script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+</head>
+
+<body>
+<h1>统计学习导论-统计学习</h1>
+
+<h1>统计学习定义</h1>
+
+<ul>
+<li>\( Y = f(X) + \epsilon \)</li>
+<li>统计学习本质上是在寻找最合适的f来进行<strong>预测</strong>与<strong>推断</strong></li>
+</ul>
+
+<h2>预测</h2>
+
+<ul>
+<li>\( \hat Y = \hat f(X) \)，\( \hat f(X) \) 通常看作黑箱</li>
+<li>\( \hat Y \)预测\( Y \)需要考虑两部分误差：可约误差与不可约误差</li>
+<li>可约误差指\( \hat f \)推断\( f \)上的偏差</li>
+<li>不可约误差指由\( \epsilon \)引入的误差</li>
+<li>误差的期望 \( E(Y - \hat Y)^2 = [f(x) - \hat f(x)]^2 + Var(\epsilon) \) (证明用到\( E(Y) \))</li>
+</ul>
+
+<h2>推断</h2>
+
+<ul>
+<li>关注X与Y的关系，\( \hat f(X) \) 通常有明确的形式</li>
+<li>自变量因变量是否相关</li>
+<li>如何相关</li>
+<li>关系的数学描述</li>
+</ul>
+
+<h2>估计f</h2>
+
+<ul>
+<li>使用训练集与验证集</li>
+<li>参数方法与非参数方法</li>
+<li>模型的欠拟合与过拟合</li>
+<li>权衡模型的准确性（预测）与可解释性（推断）</li>
+<li>模型的奥卡姆剃刀与黑箱</li>
+</ul>
+
+<h1>评价模型</h1>
+
+<h2>拟合质量测量</h2>
+
+<ul>
+<li>训练集均方误 \( MSE_{Tr} = Ave_{i \in Tr}[y_{i} − \hat f(x_i)]^2 \)</li>
+<li>测试集均方误 \( MSE_{Te} = Ave_{i \in Te}[y_{i} − \hat f(x_i)]^2 \)</li>
+<li>测试集均方误源于训练集拟合模型的方差，误差项\( \epsilon \)的方差及模型误差的平方三部分</li>
+</ul>
+
+<h2>聚类评价</h2>
+
+<ul>
+<li>错误率 \( Err_{Te} = Ave_{i \in Te}I[y_i \neq \hat C(x_i)] \)</li>
+<li>贝叶斯分类器：错误率最小的分类器，使x属于某个分类的概率最大</li>
+<li>k临近值聚类：距离最小的k个为一类所产生的分类器</li>
+</ul>
+
+</body>
+
+</html>
+
