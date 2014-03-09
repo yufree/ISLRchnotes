@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=9" >
+
+<title>统计学习导论-支持向量机</title>
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 12px;
+   margin: 8px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre {	
+   margin-top: 0;
+   max-width: 95%;
+   border: 1px solid #ccc;
+   white-space: pre-wrap;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code.r, code.cpp {
+   background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
+
+</style>
+
+
+
+<!-- MathJax scripts -->
+<script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+</head>
+
+<body>
+<h1>统计学习导论-支持向量机</h1>
+
+<h1>最大边界分类器</h1>
+
+<h2>超平面</h2>
+
+<ul>
+<li>p维空间里(p-1)维子空间</li>
+<li>\( \beta_0 + \beta_1 X_1 + \beta_2 X_2 + ... + \beta_p X_p = 0 \) 定义一个p维超平面，X落在超平面上</li>
+<li>p维空间中点X不在超平面上就在其两侧</li>
+</ul>
+
+<h2>超平面分类</h2>
+
+<ul>
+<li>n*p矩阵X分为两类Y-1或1</li>
+<li>代入超平面大于0为1，小于0为-1，有\( Y*\beta*X > 0 \) 表示分类正确</li>
+<li>构建训练函数\( f(x^*) = \beta_0 + \beta_1 X_1^* + \beta_2 X_2^* + ... + \beta_p X_p^* \) 正数表示为1，负数为-1，距离0越远表示距离超平面越远，越近表示分类越不确定，判定边界为线性</li>
+</ul>
+
+<h2>最大边界分类器</h2>
+
+<ul>
+<li>最大边界超平面：距离边界最近的距离的所有超平面中距离边界点最远的那个超平面</li>
+<li>分类良好但容易在p大时过拟合</li>
+<li>形成最大边界分类器所需要的边界点为支持向量，用以支持最大边界超平面</li>
+<li>\( f(x^*)*y_i \)在系数平方和为1时为点到平面的垂直距离，最小化后最大化这个距离是求最大边界超平面的关键</li>
+</ul>
+
+<h1>支持向量分类器</h1>
+
+<ul>
+<li>有些情况不存在超平面，需要求一个软边界来适配最多的分类，这就是支持向量分类器</li>
+<li>因为是软边界所以允许在超平面或边界一边出现误判</li>
+<li>计算上还是为最小化最大化距离，但分类上距离要乘以\( 1 - \epsilon_i \)项，也就是松弛变量</li>
+<li>松弛变量大于0表示边界误判，大于1表示超平面误判，总和为C，表示边界的容忍度，越大分类越模糊</li>
+<li>C可通过交叉检验获得，控制bias-variance权衡</li>
+<li>只有边界内观察点影响超平面的选择，这些点为支持向量，是形成模型的关键</li>
+<li>与LDA不同，使用部分数据，与logistic回归类似</li>
+</ul>
+
+<h1>支持向量机</h1>
+
+<ul>
+<li>非线性条件下可以考虑将超平面理解为非线性超平面，提高样本维度换取分类效果</li>
+<li>加入多项式等非线性描述后计算量不可控</li>
+<li>支持向量机通过核来控制非线性边界</li>
+<li>通过样本内积来解决支持向量分类问题</li>
+<li>线性支持向量分类器\( f(x) = \beta_0 + \sum_{i = 1}^{n} \alpha_i < x,x_i > \) 只有支持向量在解中非0，现在只需要支持向量的内积就可以求解</li>
+<li>内积可以推广为核函数，核函数可以采用非线性模式</li>
+<li>\( f(x) = \beta_0 + \sum_{i = 1}^{n} \alpha_i K( x,x_i ) \) 径向基核函数较为常用</li>
+<li>使用内积的核函数计算上简单且等价与高维空间超平面分类</li>
+</ul>
+
+<h2>多于二分类</h2>
+
+<ul>
+<li>一对一分类：对比\( K \choose 2 \)个分类器在检验集中的效果，通过计数来选择分类结果</li>
+<li>一对多分类：对比K个与剩下的K-1个分类，分类结果最远的认为属于那个分类</li>
+</ul>
+
+<h1>与logistic回归关系</h1>
+
+<ul>
+<li>中枢损失，对关键点敏感</li>
+<li>传统方法也可以借鉴核函数观点视同</li>
+<li>支持向量无法提供参数概率信息，采用核函数的logistic回归可以，计算量大</li>
+<li>分类距离较远，支持向量机会比logistic回归好一点</li>
+<li>支持向量机是计算机背景，logistic回归是概率背景</li>
+</ul>
+
+</body>
+
+</html>
+

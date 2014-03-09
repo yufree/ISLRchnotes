@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=9" >
+
+<title>统计学习导论-无监督学习</title>
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 12px;
+   margin: 8px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre {	
+   margin-top: 0;
+   max-width: 95%;
+   border: 1px solid #ccc;
+   white-space: pre-wrap;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code.r, code.cpp {
+   background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
+
+</style>
+
+
+
+<!-- MathJax scripts -->
+<script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+</head>
+
+<body>
+<h1>统计学习导论-无监督学习</h1>
+
+<h1>主成分分析</h1>
+
+<ul>
+<li>用较少的变量代表较多的变量，方便可视化与理解数据</li>
+<li>第一主成分\( Z_1 = \phi_{11} X_1 + \phi_{21}X_2 + ... + \phi_{p1} X_p \) 方差最大， 正则化后有\( \sum_{j = 1}^p \phi_{j1}^2 = 1 \)，则\( \phi \)为变量在第一主成分上的载荷</li>
+<li>求解上第一主成分最大化\( \frac{1}{n} \sum_{i = 1}^{n} z_{i1}^2 \) 求解载荷值，\( z_{ni} \)是第一个样本在第一个主成分上的得分</li>
+<li>载荷表示变量重要程度，得分表示样本重要程度</li>
+<li>第二主成分与第一主成分正交求解</li>
+<li>biplot 同时表示载荷与得分，载荷向量接近表示有相关性，方向不一表示相关性弱，变量在主成分得分差异表示其状态</li>
+<li>第一个主成分表示在p维空间里距离n个观察最近的超平面，因此具备代表性</li>
+<li>取M个主成分可代表所有数据\( x_{ij} \approx  \sum_{m = 1}^M z_{im} \phi_{jm} \)</li>
+<li>变量单位要统一，已经统一就不要标准化了</li>
+<li>主成分是唯一的，符号可能有变化，载荷与得分值也唯一</li>
+<li>主成分的重要性通过方差解释比例(PVE)来衡量，用碎石图来可视化\[ \frac{\sum_{i = 1}^n (\sum_{j =1}^p \phi_{jm} x_{ij})^2}{\sum_{j =1}^p x_{ij}^2} \]</li>
+<li>寻找碎石图的肘部来确定选取主成分的个数，方法不固定</li>
+<li>可用来进行M小于p的主成分回归</li>
+</ul>
+
+<h1>聚类方法</h1>
+
+<ul>
+<li>寻找子分类或簇的方法，从异质性寻找同质性</li>
+</ul>
+
+<h2>k均值聚类</h2>
+
+<ul>
+<li>子类中方差小，子类间方差大</li>
+<li>事先指定子类个数</li>
+<li>最小化所有K个平均欧式距离\( W(C_k) = \frac{1}{|C_k|} \sum_{i,i' \in C_k} \sum_{j = 1}^{p} (x_{ij} - x_{i'j})^2 \)</li>
+<li>先对所有样本随机分类，然后每种分类取中心，选取里中心距离最近的点重新分类，重新计算中心，迭代得到聚类结果</li>
+</ul>
+
+<h2>分层聚类</h2>
+
+<ul>
+<li>不需要指定先前聚类数，形成冰柱图</li>
+<li>冰柱图要垂直分层解释，水平解释容易出现误导- 修剪冰柱图可给出聚类数</li>
+<li>计算所有样本间距离，越相近就融合为一类，重新计算距离，反复这一过程</li>
+<li>计算两者间相似度是很关键的，不同场景应用不同算法</li>
+<li>变量的标准化处理上也很重要，考虑实际场景</li>
+</ul>
+
+</body>
+
+</html>
+
