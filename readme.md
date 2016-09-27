@@ -4,6 +4,8 @@
 
 请访问 http://yufree.github.com/ISLRchnotes
 
+该笔记已整理入 http://yufree.cn/notes 
+
 ## 目录
 
 - [导论](ch1.Rmd)
