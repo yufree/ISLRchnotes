@@ -6,6 +6,8 @@
 
 该笔记已整理入 http://yufree.cn/notes 
 
+该笔记已合并入 《数据分析残卷》https://yufree.github.io/datadown/
+
 ## 目录
 
 - [导论](ch1.Rmd)
