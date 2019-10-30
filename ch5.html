@@ -60,7 +60,7 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <ul>
 <li>核心思想：通过保留一部份训练集数据作为检验集来估计真实检验集的错误率与模型拟合效果</li>
 <li>验证集方法：将训练集数据分为两部分，一部份拟合模型，一部份检验模型，这样得到的错误率为真实检验集的一个估计，选取错误率较低的模型建模</li>
-<li>验证集方法缺点：错误率依赖于采样变动较大，训练集少，低估了错误率</li>
+<li>验证集方法缺点：错误率依赖于采样变动较大，训练集少，高估了错误率</li>
 <li>留一法(LOOCV)：每次建模留一个数据点作为验证集，<span class="math">\(MSE_i = (y_i - \hat y_i)^2\)</span>重复n次，得到一个CV值作为对错误率的估计:<span class="math">\(CV_{(n)} = \frac{1}{n} \sum_{i = 1}^{n} MSE_i\)</span></li>
 <li>留一法优点：使用数据量大，偏差小；结果唯一，不受随机化影响</li>
 <li>留一法缺点：计算量大，公式插入杠杆统计量调节杠杆点对方程拟合的影响，得到<span class="math">\(CV_{(n)} = \frac{1}{n} \sum_{i = 1}^{n} (\frac{y_i - \hat y_i}{1 - h_i})^2\)</span></li>
